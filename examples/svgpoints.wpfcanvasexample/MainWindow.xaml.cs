@@ -36,23 +36,36 @@ namespace svgpoints.wpfcanvasexample
                     // Get svg points
                     try
                     {
-                        var listOfPoints = svgpoints.SvgPoints.GetPointsFromSVG(files.FirstOrDefault())
-                                                              .Cast<List<Point>>();
+                        var svgPathDataList = svgpoints.SvgPoints.GetPointsFromSVG(files.FirstOrDefault());
 
                         // Draw lines
                         cvArea.Children.Clear();
-                        foreach (var points in listOfPoints)
+                        foreach (var svgPathData in svgPathDataList)
                         {
-                            for (int i = 0; i < points.Count - 1; i++)
+                            if (svgPathData.IsClosed)
                             {
-                                var myLine = new Line();
-                                myLine.Stroke = System.Windows.Media.Brushes.Black;
-                                myLine.X1 = points[i].X;
-                                myLine.X2 = points[i + 1].X;
-                                myLine.Y1 = points[i].Y;
-                                myLine.Y2 = points[i + 1].Y;
-                                myLine.StrokeThickness = 2;
-                                cvArea.Children.Add(myLine);
+                                var myPoly = new Polygon();
+                                myPoly.Stroke = System.Windows.Media.Brushes.Black;
+                                myPoly.StrokeThickness = 2;
+                                for (int i = 0; i < svgPathData.Points.Count() - 1; i++)
+                                {
+                                    myPoly.Points.Add(new System.Windows.Point(svgPathData.Points[i].X, svgPathData.Points[i].Y));
+                                }
+                                cvArea.Children.Add(myPoly);
+                            }
+                            else
+                            {
+                                for (int i = 0; i < svgPathData.Points.Count() - 1; i++)
+                                {
+                                    var myLine = new Line();
+                                    myLine.Stroke = System.Windows.Media.Brushes.Black;
+                                    myLine.X1 = svgPathData.Points[i].X;
+                                    myLine.X2 = svgPathData.Points[i + 1].X;
+                                    myLine.Y1 = svgPathData.Points[i].Y;
+                                    myLine.Y2 = svgPathData.Points[i + 1].Y;
+                                    myLine.StrokeThickness = 2;
+                                    cvArea.Children.Add(myLine);
+                                }
                             }
                         }
                     }

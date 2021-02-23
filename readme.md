@@ -1,6 +1,6 @@
 ﻿# SVG Points
 
-This is a simple library for extracting lists of points from an SVG image.
+This is a simple c# library for extracting lists of points from an SVG image.
 
 
 ## Usage

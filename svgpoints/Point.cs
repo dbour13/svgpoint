@@ -17,4 +17,10 @@ namespace svgpoints
             this.Y = y;
         }
     }
+
+    public class SVGPathData
+    {
+        public List<Point> Points { get; set; }
+        public bool IsClosed { get; set; } = false;
+    }
 }
